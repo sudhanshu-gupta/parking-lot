@@ -37,7 +37,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public boolean unPark(int slotNo) {
+    public boolean leave(int slotNo) {
         validateParkingLot();
         lock.writeLock().lock();
         try {

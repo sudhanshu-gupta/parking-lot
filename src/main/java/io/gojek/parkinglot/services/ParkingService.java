@@ -10,7 +10,7 @@ public interface ParkingService {
 
     int park(Vehicle vehicle);
 
-    boolean unPark(int slotNo);
+    boolean leave(int slotNo);
 
     List<String> getStatus();
 

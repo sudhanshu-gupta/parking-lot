@@ -11,7 +11,7 @@ public class CommandLineWriter implements Writer {
 
     @Override
     public void write(String s, Object... objects) {
-        StringBuilder sb = new StringBuilder(s);
+        StringBuilder sb = new StringBuilder();
         int objPtr = 0;
         for(int i=0;i<s.length();i++) {
             if(i< s.length()-1 && s.charAt(i) =='{' && s.charAt(i+1) == '}' && objPtr < objects.length) {

@@ -2,7 +2,6 @@ package io.gojek.parkinglot.objects;
 
 import io.gojek.parkinglot.objects.strategy.ParkingSlotStrategy;
 
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

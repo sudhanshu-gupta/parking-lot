@@ -2,13 +2,16 @@ package io.gojek.parkinglot.processor.impl;
 
 import io.gojek.parkinglot.objects.Car;
 import io.gojek.parkinglot.objects.Constants;
+import io.gojek.parkinglot.processor.CommandProcessor;
 import io.gojek.parkinglot.processor.commands.ParkingLotCommand;
+import io.gojek.parkinglot.services.ParkingService;
 import io.gojek.parkinglot.utils.Assert;
 import io.gojek.parkinglot.writer.Writer;
-import io.gojek.parkinglot.processor.CommandProcessor;
-import io.gojek.parkinglot.services.ParkingService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
+import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +22,17 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
     private final ParkingService parkingService;
     private final Writer writer;
 
-    protected void process(String input) {
+    @SneakyThrows
+    protected void process(Reader reader) {
+        try (BufferedReader bufferedReader = new BufferedReader(reader)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                processCommand(line.trim());
+            }
+        }
+    }
+
+    private void processCommand(String input) {
         try {
             String[] args = input.split(" ");
             ParkingLotCommand command = ParkingLotCommand.get(args[0]);
@@ -87,7 +100,7 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
         Assert.equals(args.length, 2, "Invalid input to unpark car");
         int slot = Integer.valueOf(args[1].trim());
         Assert.greaterThanOrEqualTo(slot, 1, "Invalid slot number");
-        if(parkingService.unPark(slot)) {
+        if(parkingService.leave(slot)) {
             writer.write("Slot number {} is free", slot);
         } else {
             writer.write("Slot number {} is empty", slot);

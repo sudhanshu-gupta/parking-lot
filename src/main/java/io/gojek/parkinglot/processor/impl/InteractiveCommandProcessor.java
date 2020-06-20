@@ -3,6 +3,8 @@ package io.gojek.parkinglot.processor.impl;
 import io.gojek.parkinglot.services.ParkingService;
 import io.gojek.parkinglot.writer.Writer;
 
+import java.io.InputStreamReader;
+
 public class InteractiveCommandProcessor extends AbstractCommandProcessor {
 
     public InteractiveCommandProcessor(ParkingService parkingService, Writer writer) {
@@ -11,6 +13,6 @@ public class InteractiveCommandProcessor extends AbstractCommandProcessor {
 
     @Override
     public void process() {
-
+        process(new InputStreamReader(System.in));
     }
 }
