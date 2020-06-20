@@ -8,7 +8,7 @@
 
 #### Through File
 - *bin/setup*
-- *bin/run_functional_tests*
+- *bin/parking_lot {AbsoluteFilePath}*
 
 ### Parking Lot Commands
 #### Create Parking Lot
