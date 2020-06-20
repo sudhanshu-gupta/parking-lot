@@ -1,4 +1,4 @@
-package io.gojek.parkinglot.objects.strategy;
+package io.gojek.parkinglot.model.strategy;
 
 public interface ParkingSlotStrategy {
 

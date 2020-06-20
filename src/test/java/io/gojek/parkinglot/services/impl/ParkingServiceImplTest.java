@@ -1,7 +1,7 @@
 package io.gojek.parkinglot.services.impl;
 
 
-import io.gojek.parkinglot.objects.Car;
+import io.gojek.parkinglot.model.Car;
 import io.gojek.parkinglot.services.ParkingService;
 import org.junit.After;
 import org.junit.Before;

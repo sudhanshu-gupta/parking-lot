@@ -1,4 +1,4 @@
-package io.gojek.parkinglot.objects;
+package io.gojek.parkinglot.model;
 
 public class Constants {
 

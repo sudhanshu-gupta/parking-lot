@@ -11,6 +11,9 @@ public class InteractiveCommandProcessor extends AbstractCommandProcessor {
         super(parkingService, printWriter);
     }
 
+    /**
+     * run the parking lot process. It read from the command prompt. On receiving exit command, it terminate the program
+     */
     @Override
     public void process() {
         process(new InputStreamReader(System.in));

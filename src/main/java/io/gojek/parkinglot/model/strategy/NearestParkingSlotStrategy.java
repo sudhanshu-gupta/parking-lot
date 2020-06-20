@@ -1,6 +1,6 @@
-package io.gojek.parkinglot.objects.strategy;
+package io.gojek.parkinglot.model.strategy;
 
-import io.gojek.parkinglot.objects.Constants;
+import io.gojek.parkinglot.model.Constants;
 
 import java.util.TreeSet;
 

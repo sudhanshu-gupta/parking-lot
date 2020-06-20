@@ -1,8 +1,8 @@
 package io.gojek.parkinglot.processor.impl;
 
-import io.gojek.parkinglot.objects.Car;
-import io.gojek.parkinglot.objects.Constants;
-import io.gojek.parkinglot.objects.Vehicle;
+import io.gojek.parkinglot.model.Car;
+import io.gojek.parkinglot.model.Constants;
+import io.gojek.parkinglot.model.Vehicle;
 import io.gojek.parkinglot.processor.CommandProcessor;
 import io.gojek.parkinglot.processor.commands.ParkingLotCommand;
 import io.gojek.parkinglot.services.ParkingService;
@@ -27,6 +27,7 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
 
     @SneakyThrows
     protected void process(Reader reader) {
+        printWriter.print("Welcome to Parking Lot System. Please enter commands to continue... or exit to terminate...");
         try (BufferedReader bufferedReader = new BufferedReader(reader)) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {

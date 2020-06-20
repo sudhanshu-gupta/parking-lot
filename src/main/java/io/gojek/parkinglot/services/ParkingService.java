@@ -1,6 +1,6 @@
 package io.gojek.parkinglot.services;
 
-import io.gojek.parkinglot.objects.Vehicle;
+import io.gojek.parkinglot.model.Vehicle;
 
 import java.util.List;
 import java.util.Map;

@@ -1,8 +1,9 @@
 package io.gojek.parkinglot.services.impl;
 
-import io.gojek.parkinglot.objects.ParkingLot;
-import io.gojek.parkinglot.objects.Vehicle;
-import io.gojek.parkinglot.objects.strategy.ParkingSlotStrategy;
+import io.gojek.parkinglot.model.OneLevelParkingLot;
+import io.gojek.parkinglot.model.ParkingLot;
+import io.gojek.parkinglot.model.Vehicle;
+import io.gojek.parkinglot.model.strategy.ParkingSlotStrategy;
 import io.gojek.parkinglot.services.ParkingService;
 
 import java.util.List;
@@ -14,6 +15,11 @@ public class ParkingServiceImpl implements ParkingService {
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private ParkingLot<Vehicle> parkingLot;
 
+    /**
+     * Creates the instance of parking Lot if instance is already null. If instance already
+     * exist, it throws the IllegalStateException.java exception.
+     * @param capacity valid capacity of the parking Lot
+     */
     @Override
     public void createParkingLot(int capacity) {
         if (parkingLot != null) {
@@ -22,9 +28,15 @@ public class ParkingServiceImpl implements ParkingService {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Invalid capacity");
         }
-        parkingLot = ParkingLot.getInstance(capacity, ParkingSlotStrategy.NEAREST_SLOT);
+        parkingLot = OneLevelParkingLot.getInstance(capacity, ParkingSlotStrategy.NEAREST_SLOT);
     }
 
+    /**
+     * Park a vehicle in the slot selected by the slot assignment strategy class. If no slots available, returns -1, if
+     * vehicle already parked, return -2
+     * @param vehicle vehicle instance with valid registration number and color
+     * @return assigned slot number if slot is available else return -1
+     */
     @Override
     public int park(Vehicle vehicle) {
         validateParkingLot();
@@ -36,6 +48,11 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    /**
+     * unpark a vehicle from the desired slot, if slot number is valid and vehicle is present
+     * @param slotNo slot number where the vehicle is parked
+     * @return true, if vehicle is removed from the slot, else false
+     */
     @Override
     public boolean leave(int slotNo) {
         validateParkingLot();
@@ -47,6 +64,10 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    /**
+     * fetch all occupied slots with vehicles
+     * @return return all the slots which are currently occupied along with its parked vehicle instances
+     */
     @Override
     public Map<Integer, Vehicle> getAllOccupiedSlots() {
         validateParkingLot();
@@ -58,6 +79,9 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    /**
+     * @return get the total number of available slot count
+     */
     @Override
     public int countAvailableSlots() {
         validateParkingLot();
@@ -69,6 +93,12 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    /**
+     * fetch all the registration number of the vehicles which has the given color. If no such vehicle is present, it
+     * return the empty list.
+     * @param color color given valid color. input case is ignore while doing comparision.
+     * @return ist of vehicle registration number with given colored vehicle.
+     */
     @Override
     public List<String> getRegistrationNumbersByColor(String color) {
         validateParkingLot();
@@ -80,6 +110,12 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    /**
+     * fetch the all the occupied slots which has the vehicle of the given color. If no such slot is present, return the
+     * empty list of slots.
+     * @param color given valid color. input case is ignore while doing comparision.
+     * @return list of all occupied slots with given colored vehicle parked.
+     */
     @Override
     public List<Integer> getSlotsByColor(String color) {
         validateParkingLot();
@@ -91,6 +127,12 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    /**
+     * get the slot number of the vehicle with the given registration number where the vehicle is parked. If no such
+     * vehicle is present, it return the -1 (Not Found)
+     * @param registrationNumber valid registration number of the vehicle
+     * @return valid slot number if vehicle with given registration number is present, else -1 (Not Found)
+     */
     @Override
     public int getSlotNumberByRegistrationNumber(String registrationNumber) {
         validateParkingLot();
@@ -102,6 +144,10 @@ public class ParkingServiceImpl implements ParkingService {
         }
     }
 
+    /**
+     * clear the parking Lot data structure. It resent all the variables to default values. It also, assign null to
+     * the Parking Lot instance
+     */
     @Override
     public void clearParkingLot() {
         validateParkingLot();

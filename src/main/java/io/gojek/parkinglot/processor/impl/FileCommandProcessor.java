@@ -19,6 +19,10 @@ public class FileCommandProcessor extends AbstractCommandProcessor {
         this.fileName = fileName;
     }
 
+    /**
+     * run the parking lot process. It read the commands from the given file.
+     * Throws exception if file not found.
+     */
     @Override
     @SneakyThrows
     public void process() {
