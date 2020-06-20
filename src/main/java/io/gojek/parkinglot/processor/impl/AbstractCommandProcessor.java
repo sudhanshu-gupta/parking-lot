@@ -69,6 +69,7 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
                     break;
                 }
                 case EXIT: {
+                    parkingService.clearParkingLot();
                     System.exit(0);
                     break;
                 }
@@ -110,7 +111,7 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
     }
 
     private void status() {
-        Map<Integer, Vehicle> status = parkingService.getStatus();
+        Map<Integer, Vehicle> status = parkingService.getAllOccupiedSlots();
         if (status == null || status.isEmpty()) {
             printWriter.print("Sorry, parking lot is empty.");
         } else {

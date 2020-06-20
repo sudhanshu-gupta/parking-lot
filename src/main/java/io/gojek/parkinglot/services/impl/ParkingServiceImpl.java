@@ -11,9 +11,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ParkingServiceImpl implements ParkingService {
 
-    private ParkingLot<Vehicle> parkingLot;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-
+    private ParkingLot<Vehicle> parkingLot;
 
     @Override
     public void createParkingLot(int capacity) {
@@ -49,11 +48,11 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public Map<Integer, Vehicle> getStatus() {
+    public Map<Integer, Vehicle> getAllOccupiedSlots() {
         validateParkingLot();
         lock.readLock().lock();
         try {
-            return parkingLot.status();
+            return parkingLot.getAllOccupiedSlots();
         } finally {
             lock.readLock().unlock();
         }
@@ -109,6 +108,7 @@ public class ParkingServiceImpl implements ParkingService {
         lock.writeLock().lock();
         try {
             parkingLot.clear();
+            parkingLot = null;
         } finally {
             lock.writeLock().unlock();
         }

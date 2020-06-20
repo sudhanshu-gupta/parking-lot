@@ -13,7 +13,7 @@ public interface ParkingService {
 
     boolean leave(int slotNo);
 
-    Map<Integer, Vehicle> getStatus();
+    Map<Integer, Vehicle> getAllOccupiedSlots();
 
     int countAvailableSlots();
 
