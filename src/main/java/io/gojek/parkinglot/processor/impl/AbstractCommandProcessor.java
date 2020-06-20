@@ -27,7 +27,6 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
 
     @SneakyThrows
     protected void process(Reader reader) {
-        printWriter.print("Welcome to Parking Lot System. Please enter commands to continue... or exit to terminate...");
         try (BufferedReader bufferedReader = new BufferedReader(reader)) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
