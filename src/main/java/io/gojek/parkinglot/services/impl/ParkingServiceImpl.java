@@ -6,12 +6,13 @@ import io.gojek.parkinglot.objects.strategy.ParkingSlotStrategy;
 import io.gojek.parkinglot.services.ParkingService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ParkingServiceImpl implements ParkingService {
 
     private ParkingLot<Vehicle> parkingLot;
-    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
 
     @Override
@@ -48,7 +49,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public List<String> getStatus() {
+    public Map<Integer, Vehicle> getStatus() {
         validateParkingLot();
         lock.readLock().lock();
         try {
@@ -114,7 +115,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     private void validateParkingLot() {
-        if(parkingLot == null) {
+        if (parkingLot == null) {
             throw new IllegalStateException("Parking lot does not exist");
         }
     }

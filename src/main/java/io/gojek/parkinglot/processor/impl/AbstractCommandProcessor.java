@@ -2,25 +2,28 @@ package io.gojek.parkinglot.processor.impl;
 
 import io.gojek.parkinglot.objects.Car;
 import io.gojek.parkinglot.objects.Constants;
+import io.gojek.parkinglot.objects.Vehicle;
 import io.gojek.parkinglot.processor.CommandProcessor;
 import io.gojek.parkinglot.processor.commands.ParkingLotCommand;
 import io.gojek.parkinglot.services.ParkingService;
 import io.gojek.parkinglot.utils.Assert;
-import io.gojek.parkinglot.writer.Writer;
+import io.gojek.parkinglot.writer.PrintWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
 public abstract class AbstractCommandProcessor implements CommandProcessor {
 
+    private static final String STATUS_PLACEHOLDER = "%-12s%-19s%s";
     private final ParkingService parkingService;
-    private final Writer writer;
+    private final PrintWriter printWriter;
 
     @SneakyThrows
     protected void process(Reader reader) {
@@ -71,83 +74,81 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
                 }
             }
         } catch (Exception e) {
-            writer.write(e.getMessage());
+            printWriter.print(e.getMessage());
         }
     }
 
     private void createLot(String[] args) {
         Assert.equals(args.length, 2, "Invalid capacity");
-        int capacity = Integer.valueOf(args[1].trim());
+        int capacity = Integer.parseInt(args[1].trim());
         Assert.greaterThanOrEqualTo(capacity, 1, "Invalid capacity");
         parkingService.createParkingLot(capacity);
-        writer.write("Created a parking lot with {} slots", capacity);
+        printWriter.print("Created a parking lot with {} slots", capacity);
     }
 
     private void park(String[] args) {
         Assert.equals(args.length, 3, "Invalid input to park car");
         int slot = parkingService.park(new Car(args[1].trim().toUpperCase(), args[2].trim()));
-        if(slot == Constants.NOT_AVAILABLE) {
-            writer.write("Sorry, parking lot is full");
-        }
-        else if(slot == Constants.ALREADY_EXIST) {
-            writer.write("Sorry, vehicle is already parked.");
+        if (slot == Constants.NOT_AVAILABLE) {
+            printWriter.print("Sorry, parking lot is full");
+        } else if (slot == Constants.ALREADY_EXIST) {
+            printWriter.print("Sorry, vehicle is already parked.");
         } else {
-            writer.write("Allocated slot number: {}", slot);
+            printWriter.print("Allocated slot number: {}", slot);
         }
     }
 
     private void leave(String[] args) {
         Assert.equals(args.length, 2, "Invalid input to unpark car");
-        int slot = Integer.valueOf(args[1].trim());
+        int slot = Integer.parseInt(args[1].trim());
         Assert.greaterThanOrEqualTo(slot, 1, "Invalid slot number");
-        if(parkingService.leave(slot)) {
-            writer.write("Slot number {} is free", slot);
+        if (parkingService.leave(slot)) {
+            printWriter.print("Slot number {} is free", slot);
         } else {
-            writer.write("Slot number {} is empty", slot);
+            printWriter.print("Slot number {} is empty", slot);
         }
     }
 
     private void status() {
-        List<String> status = parkingService.getStatus();
-        if(status == null || status.isEmpty()) {
-            writer.write("Sorry, parking lot is empty.");
-        }
-        else {
-            writer.write("Slot No.\tRegistration No\tColour");
-            status.forEach(writer::write);
+        Map<Integer, Vehicle> status = parkingService.getStatus();
+        if (status == null || status.isEmpty()) {
+            printWriter.print("Sorry, parking lot is empty.");
+        } else {
+            printWriter.print(String.format(STATUS_PLACEHOLDER, "Slot No.", "Registration No", "Colour"));
+            status.entrySet().stream()
+                    .map(entry -> String.format(STATUS_PLACEHOLDER, entry.getKey(),
+                            entry.getValue().getRegistrationNo(), entry.getValue().getColor()))
+                    .forEach(printWriter::print);
         }
     }
 
     private void getCarsByColor(String[] args) {
         Assert.equals(args.length, 2, "Invalid colour input");
         List<String> registrationNumbers = parkingService.getRegistrationNumbersByColor(args[1].trim());
-        if(registrationNumbers == null || registrationNumbers.isEmpty()) {
-            writer.write("Sorry, no cars with colour: {} found", args[1]);
-        }
-        else {
-            writer.write(registrationNumbers.stream().collect(Collectors.joining(", ")).trim());
+        if (registrationNumbers == null || registrationNumbers.isEmpty()) {
+            printWriter.print("Sorry, no cars with colour: {} found", args[1]);
+        } else {
+            printWriter.print(String.join(", ", registrationNumbers).trim());
         }
     }
 
     private void getSlotsByColor(String[] args) {
         Assert.equals(args.length, 2, "Invalid colour input");
         List<Integer> slots = parkingService.getSlotsByColor(args[1].trim());
-        if(slots == null || slots.isEmpty()) {
-            writer.write("Sorry, no slots with cars of colour: {} found", args[1]);
-        }
-        else {
-            writer.write(slots.stream().map(String::valueOf).collect(Collectors.joining(", ")).trim());
+        if (slots == null || slots.isEmpty()) {
+            printWriter.print("Sorry, no slots with cars of colour: {} found", args[1]);
+        } else {
+            printWriter.print(slots.stream().map(String::valueOf).collect(Collectors.joining(", ")).trim());
         }
     }
 
     private void getSlotByRegistrationNumber(String[] args) {
         Assert.equals(args.length, 2, "Invalid registration number");
         int slotNo = parkingService.getSlotNumberByRegistrationNumber(args[1].trim());
-        if(slotNo == Constants.NOT_FOUND) {
-            writer.write("Not found");
-        }
-        else {
-            writer.write("{}", slotNo);
+        if (slotNo == Constants.NOT_FOUND) {
+            printWriter.print("Not found");
+        } else {
+            printWriter.print("{}", slotNo);
         }
     }
 }

@@ -4,8 +4,8 @@ import io.gojek.parkinglot.processor.impl.FileCommandProcessor;
 import io.gojek.parkinglot.processor.impl.InteractiveCommandProcessor;
 import io.gojek.parkinglot.services.ParkingService;
 import io.gojek.parkinglot.services.impl.ParkingServiceImpl;
-import io.gojek.parkinglot.writer.Writer;
-import io.gojek.parkinglot.writer.impl.CommandLineWriter;
+import io.gojek.parkinglot.writer.PrintWriter;
+import io.gojek.parkinglot.writer.impl.CommandLinePrintWriter;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -23,7 +23,7 @@ public class BeanConfiguration {
         return new ParkingServiceImpl();
     }
 
-    private Writer commandLineWriter() {
-        return new CommandLineWriter();
+    private PrintWriter commandLineWriter() {
+        return new CommandLinePrintWriter();
     }
 }

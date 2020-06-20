@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 public class ProcessStrategy {
 
     public CommandProcessor getProcessor(String[] args) {
-        if(args.length > 0) {
+        if (args.length > 0) {
             Assert.notEmpty(args[0], "input file name cannot null or empty");
             return BeanConfiguration.fileCommandProcessor(args[0]);
         }

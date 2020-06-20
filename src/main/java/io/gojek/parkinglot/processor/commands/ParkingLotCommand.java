@@ -23,9 +23,8 @@ public enum ParkingLotCommand {
     GET_SLOT_BY_REG_NO("slot_number_for_registration_number"),
     EXIT("exit");
 
-    private final String name;
-
     private static final Map<String, ParkingLotCommand> COMMANDS = Collections.unmodifiableMap(initialize());
+    private final String name;
 
     public static ParkingLotCommand get(String command) {
         Assert.notEmpty(command, "command cannot be null or empty");

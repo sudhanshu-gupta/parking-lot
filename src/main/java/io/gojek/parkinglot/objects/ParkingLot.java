@@ -13,19 +13,29 @@ import java.util.stream.Collectors;
 
 public class ParkingLot<T extends Vehicle> {
 
+    @SuppressWarnings("useRaw")
+    private static ParkingLot instance;
     private AtomicInteger capacity = new AtomicInteger();
     private AtomicInteger available = new AtomicInteger();
     private AtomicReference<ParkingSlotStrategy> parkingSlotStrategy = new AtomicReference<>();
     private Map<Integer, Optional<T>> slots;
-    private static final String STATUS_PLACEHOLDER = "%d\t\t%s\t\t%s";
 
-    private static ParkingLot instance;
+    private ParkingLot(int capacity, ParkingSlotStrategy parkingSlotStrategy) {
+        this.capacity.set(capacity);
+        this.available.set(capacity);
+        this.parkingSlotStrategy.set(parkingSlotStrategy);
+        this.slots = new ConcurrentHashMap<>();
+        for (int slot = 1; slot <= capacity; slot++) {
+            this.parkingSlotStrategy.get().addSlot(slot);
+            this.slots.put(slot, Optional.empty());
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static <T extends Vehicle> ParkingLot<T> getInstance(int capacity, ParkingSlotStrategy parkingSlotStrategy) {
-        if(instance == null) {
+        if (instance == null) {
             synchronized (ParkingLot.class) {
-                if(instance == null) {
+                if (instance == null) {
                     instance = new ParkingLot<T>(capacity, parkingSlotStrategy);
                 }
             }
@@ -33,22 +43,11 @@ public class ParkingLot<T extends Vehicle> {
         return instance;
     }
 
-    private ParkingLot(int capacity, ParkingSlotStrategy parkingSlotStrategy) {
-        this.capacity.set(capacity);
-        this.available.set(capacity);
-        this.parkingSlotStrategy.set(parkingSlotStrategy);
-        this.slots  = new ConcurrentHashMap<>();
-        for(int slot=1; slot <= capacity; slot++) {
-            this.parkingSlotStrategy.get().addSlot(slot);
-            this.slots.put(slot, Optional.empty());
-        }
-    }
-
     public int park(T vehicle) {
-        if(available.get() == 0) {
+        if (available.get() == 0) {
             return Constants.NOT_AVAILABLE;
         }
-        if(slots.containsValue(Optional.of(vehicle))) {
+        if (slots.containsValue(Optional.of(vehicle))) {
             return Constants.ALREADY_EXIST;
         }
         int availableSlot = parkingSlotStrategy.get().getSlot();
@@ -59,7 +58,7 @@ public class ParkingLot<T extends Vehicle> {
     }
 
     public boolean leave(int slotNo) {
-        if(slotNo < 0 || slotNo > capacity.get() || !slots.get(slotNo).isPresent()) {
+        if (slotNo < 0 || slotNo > capacity.get() || !slots.get(slotNo).isPresent()) {
             return false;
         }
         available.incrementAndGet();
@@ -68,12 +67,10 @@ public class ParkingLot<T extends Vehicle> {
         return true;
     }
 
-    public List<String> status() {
+    public Map<Integer, Vehicle> status() {
         return slots.entrySet().stream()
                 .filter(entry -> entry.getValue().isPresent())
-                .map(entry -> String.format(STATUS_PLACEHOLDER, entry.getKey(),
-                        entry.getValue().get().getRegistrationNo(), entry.getValue().get().getColor()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(Map.Entry::getKey, a -> a.getValue().get()));
     }
 
     public int getAvailableSlot() {

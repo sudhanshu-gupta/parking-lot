@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 public class NearestParkingSlotStrategy implements ParkingSlotStrategy {
 
-    private TreeSet<Integer> freeSlots = new TreeSet<>();
+    private final TreeSet<Integer> freeSlots = new TreeSet<>();
 
     @Override
     public void addSlot(int slotNo) {
@@ -20,7 +20,7 @@ public class NearestParkingSlotStrategy implements ParkingSlotStrategy {
 
     @Override
     public int getSlot() {
-        if(freeSlots.size() == 0) return Constants.NOT_AVAILABLE;
+        if (freeSlots.size() == 0) return Constants.NOT_AVAILABLE;
         return freeSlots.first();
     }
 }
