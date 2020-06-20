@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 public class InteractiveCommandProcessor extends AbstractCommandProcessor {
 
-    private PrintWriter printWriter;
+    private final PrintWriter printWriter;
     public InteractiveCommandProcessor(ParkingService parkingService, PrintWriter printWriter) {
         super(parkingService, printWriter);
         this.printWriter = printWriter;
