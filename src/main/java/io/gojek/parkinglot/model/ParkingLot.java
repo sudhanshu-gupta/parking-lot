@@ -1,10 +1,11 @@
 package io.gojek.parkinglot.model;
 
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface ParkingLot<T extends Vehicle> {
+public interface ParkingLot<T extends Vehicle> extends Serializable {
 
     int park(T vehicle);
     boolean leave(int slotNo);
