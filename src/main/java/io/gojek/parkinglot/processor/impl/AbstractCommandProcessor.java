@@ -70,7 +70,6 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
                     break;
                 }
                 case EXIT: {
-                    parkingService.clearParkingLot();
                     System.exit(0);
                     break;
                 }
