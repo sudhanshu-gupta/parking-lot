@@ -2,11 +2,12 @@ package io.gojek.parkinglot.model.strategy;
 
 import io.gojek.parkinglot.model.Constants;
 
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class NearestParkingSlotStrategy implements ParkingSlotStrategy {
 
-    private final TreeSet<Integer> freeSlots = new TreeSet<>();
+    private final SortedSet<Integer> freeSlots = new TreeSet<>();
 
     @Override
     public void addSlot(int slotNo) {

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +18,7 @@ public class ParkingServiceImplTest {
 
     @Before
     public void setUp() {
-        parkingService = new ParkingServiceImpl();
+        parkingService = new ParkingServiceImpl(new ReentrantReadWriteLock());
     }
 
     @After

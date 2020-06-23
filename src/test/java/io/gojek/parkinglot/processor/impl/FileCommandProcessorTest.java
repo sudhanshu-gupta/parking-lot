@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class FileCommandProcessorTest {
 
@@ -16,7 +17,7 @@ public class FileCommandProcessorTest {
     @Before
     public void setUp() {
         commandProcessor = new FileCommandProcessor(
-                new ParkingServiceImpl(), new CommandLinePrintWriter(),
+                new ParkingServiceImpl(new ReentrantReadWriteLock()), new CommandLinePrintWriter(),
                 new File("src/test/resources/test_file_input.txt").getAbsolutePath());
     }
 

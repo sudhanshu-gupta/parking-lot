@@ -5,14 +5,18 @@ import io.gojek.parkinglot.model.ParkingLot;
 import io.gojek.parkinglot.model.Vehicle;
 import io.gojek.parkinglot.model.strategy.ParkingSlotStrategy;
 import io.gojek.parkinglot.services.ParkingService;
+import io.gojek.parkinglot.utils.Assert;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@RequiredArgsConstructor
 public class ParkingServiceImpl implements ParkingService {
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final ReadWriteLock lock;
     private ParkingLot<Vehicle> parkingLot;
 
     /**
@@ -25,9 +29,7 @@ public class ParkingServiceImpl implements ParkingService {
         if (parkingLot != null) {
             throw new IllegalStateException("Parking lot already exist");
         }
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("Invalid capacity");
-        }
+        Assert.greaterThanOrEqualTo(capacity, 1, "Invalid capacity");
         parkingLot = OneLevelParkingLot.getInstance(capacity, ParkingSlotStrategy.NEAREST_SLOT);
     }
 

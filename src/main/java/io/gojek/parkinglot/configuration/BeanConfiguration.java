@@ -8,6 +8,8 @@ import io.gojek.parkinglot.writer.PrintWriter;
 import io.gojek.parkinglot.writer.impl.CommandLinePrintWriter;
 import lombok.experimental.UtilityClass;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 @UtilityClass
 public class BeanConfiguration {
 
@@ -20,7 +22,7 @@ public class BeanConfiguration {
     }
 
     private ParkingService parkingService() {
-        return new ParkingServiceImpl();
+        return new ParkingServiceImpl(new ReentrantReadWriteLock());
     }
 
     private PrintWriter commandLineWriter() {
