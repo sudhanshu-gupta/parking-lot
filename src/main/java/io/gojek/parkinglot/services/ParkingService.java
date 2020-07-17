@@ -13,13 +13,13 @@ public interface ParkingService {
 
     boolean leave(String slotId);
 
-    Map<Integer, Vehicle> getAllOccupiedSlots();
+    Map<String, Vehicle> getAllOccupiedSlots();
 
     int countAvailableSlots();
 
     List<String> getRegistrationNumbersByColor(String color);
 
-    List<Integer> getSlotsByColor(String color);
+    List<String> getSlotsByColor(String color);
 
     String getSlotNumberByRegistrationNumber(String registrationNumber);
 

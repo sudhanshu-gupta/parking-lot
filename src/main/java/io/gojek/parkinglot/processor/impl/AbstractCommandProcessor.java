@@ -110,7 +110,7 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
     }
 
     private void status() {
-        Map<Integer, Vehicle> status = parkingService.getAllOccupiedSlots();
+        Map<String, Vehicle> status = parkingService.getAllOccupiedSlots();
         if (status == null || status.isEmpty()) {
             printWriter.print("Sorry, parking lot is empty.");
         } else {
@@ -134,11 +134,11 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
 
     private void getSlotsByColor(String[] args) {
         Assert.equals(args.length, 2, "Invalid colour input");
-        List<Integer> slots = parkingService.getSlotsByColor(args[1].trim());
+        List<String> slots = parkingService.getSlotsByColor(args[1].trim());
         if (slots == null || slots.isEmpty()) {
             printWriter.print("Sorry, no slots with cars of colour: {} found", args[1]);
         } else {
-            printWriter.print(slots.stream().map(String::valueOf).collect(Collectors.joining(", ")).trim());
+            printWriter.print(String.join(", ", slots).trim());
         }
     }
 

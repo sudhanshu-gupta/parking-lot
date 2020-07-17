@@ -96,10 +96,10 @@ public class OneLevelParkingLot<T extends Vehicle> implements ParkingLot<T> {
      * @return return all the slots which are currently occupied along with its parked vehicle instances
      */
     @Override
-    public Map<Integer, Vehicle> getAllOccupiedSlots() {
+    public Map<String, Vehicle> getAllOccupiedSlots() {
         return slots.entrySet().stream()
                 .filter(entry -> entry.getValue().isPresent())
-                .collect(Collectors.toMap(Map.Entry::getKey, a -> a.getValue().get()));
+                .collect(Collectors.toMap(a -> a.getKey().toString(), a -> a.getValue().get()));
     }
 
     /**
@@ -117,10 +117,11 @@ public class OneLevelParkingLot<T extends Vehicle> implements ParkingLot<T> {
      * @return list of all occupied slots with given colored vehicle parked.
      */
     @Override
-    public List<Integer> getSlotNumbersByVehicleColor(String color) {
+    public List<String> getSlotNumbersByVehicleColor(String color) {
         return slots.entrySet().stream()
                 .filter(entry -> entry.getValue().isPresent() && entry.getValue().get().getColor().equalsIgnoreCase(color))
                 .map(Map.Entry::getKey)
+                .map(String::valueOf)
                 .collect(Collectors.toList());
     }
 

@@ -71,7 +71,7 @@ public class ParkingServiceImpl implements ParkingService {
      * @return return all the slots which are currently occupied along with its parked vehicle instances
      */
     @Override
-    public Map<Integer, Vehicle> getAllOccupiedSlots() {
+    public Map<String, Vehicle> getAllOccupiedSlots() {
         validateParkingLot();
         lock.readLock().lock();
         try {
@@ -119,7 +119,7 @@ public class ParkingServiceImpl implements ParkingService {
      * @return list of all occupied slots with given colored vehicle parked.
      */
     @Override
-    public List<Integer> getSlotsByColor(String color) {
+    public List<String> getSlotsByColor(String color) {
         validateParkingLot();
         lock.readLock().lock();
         try {

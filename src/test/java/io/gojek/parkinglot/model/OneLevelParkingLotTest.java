@@ -79,7 +79,7 @@ public class OneLevelParkingLotTest {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(3, ParkingSlotStrategy.NEAREST_SLOT);
         parkingLot.park(new Car("KA-01-HH-1234", "White"));
         parkingLot.park(new Car("KA-01-HH-1239", "White"));
-        Map<Integer, Vehicle> occupiedSlots = parkingLot.getAllOccupiedSlots();
+        Map<String, Vehicle> occupiedSlots = parkingLot.getAllOccupiedSlots();
         assertThat(occupiedSlots).hasSize(2);
         parkingLot.clear();
     }
@@ -87,7 +87,7 @@ public class OneLevelParkingLotTest {
     @Test
     public void should_getAllOccupiedVehicles_when_thereAreNoVehicles() {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(3, ParkingSlotStrategy.NEAREST_SLOT);
-        Map<Integer, Vehicle> occupiedSlots = parkingLot.getAllOccupiedSlots();
+        Map<String, Vehicle> occupiedSlots = parkingLot.getAllOccupiedSlots();
         assertThat(occupiedSlots).hasSize(0);
         parkingLot.clear();
     }
@@ -97,7 +97,7 @@ public class OneLevelParkingLotTest {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(3, ParkingSlotStrategy.NEAREST_SLOT);
         parkingLot.park(new Car("KA-01-HH-1234", "White"));
         parkingLot.park(new Car("KA-01-HH-1239", "White"));
-        List<Integer> slots = parkingLot.getSlotNumbersByVehicleColor("White");
+        List<String> slots = parkingLot.getSlotNumbersByVehicleColor("White");
         assertThat(slots).hasSize(2);
         parkingLot.clear();
     }
@@ -107,7 +107,7 @@ public class OneLevelParkingLotTest {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(3, ParkingSlotStrategy.NEAREST_SLOT);
         parkingLot.park(new Car("KA-01-HH-1234", "White"));
         parkingLot.park(new Car("KA-01-HH-1239", "White"));
-        List<Integer> slots = parkingLot.getSlotNumbersByVehicleColor("Red");
+        List<String> slots = parkingLot.getSlotNumbersByVehicleColor("Red");
         assertThat(slots).hasSize(0);
         parkingLot.clear();
     }

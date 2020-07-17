@@ -9,9 +9,9 @@ public interface ParkingLot<T extends Vehicle> extends Serializable {
 
     String park(T vehicle);
     boolean leave(String slotId);
-    Map<Integer, Vehicle> getAllOccupiedSlots();
+    Map<String, Vehicle> getAllOccupiedSlots();
     int getAvailableSlot();
-    List<Integer> getSlotNumbersByVehicleColor(String color);
+    List<String> getSlotNumbersByVehicleColor(String color);
     List<String> getRegistrationNumbersByVehicleColor(String color);
     String getSlotNumberByRegistrationNumber(String registrationNumber);
     void clear();

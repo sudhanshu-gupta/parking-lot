@@ -16,7 +16,7 @@ public class MultiLevelParkingLot implements ParkingLot<Vehicle> {
     }
 
     @Override
-    public Map<Integer, Vehicle> getAllOccupiedSlots() {
+    public Map<String, Vehicle> getAllOccupiedSlots() {
         return null;
     }
 
@@ -26,7 +26,7 @@ public class MultiLevelParkingLot implements ParkingLot<Vehicle> {
     }
 
     @Override
-    public List<Integer> getSlotNumbersByVehicleColor(String color) {
+    public List<String> getSlotNumbersByVehicleColor(String color) {
         return null;
     }
 

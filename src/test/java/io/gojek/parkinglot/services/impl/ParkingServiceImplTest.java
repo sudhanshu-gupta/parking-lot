@@ -67,7 +67,7 @@ public class ParkingServiceImplTest {
     public void should_getSlotNos_when_carsByColorPresent() {
         parkingService.createParkingLot(3);
         parkingService.park(new Car("KA-01-HH-1234", "White"));
-        List<Integer> registrationNumbers = parkingService.getSlotsByColor("White");
+        List<String> registrationNumbers = parkingService.getSlotsByColor("White");
         assertThat(registrationNumbers).hasSize(1);
     }
 }
