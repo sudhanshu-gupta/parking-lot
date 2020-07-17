@@ -35,15 +35,15 @@ public class ParkingServiceImplTest {
     @Test
     public void should_parkCar_when_slotAvailable() {
         parkingService.createParkingLot(3);
-        int slotNo = parkingService.park(new Car("KA-01-HH-1234", "White"));
-        assertThat(slotNo).isEqualTo(1);
+        String slotNo = parkingService.park(new Car("KA-01-HH-1234", "White"));
+        assertThat(slotNo).isEqualTo(String.valueOf(1));
     }
 
     @Test
     public void should_leaveCar_when_slotOccupied() {
         parkingService.createParkingLot(3);
         parkingService.park(new Car("KA-01-HH-1234", "White"));
-        parkingService.leave(1);
+        parkingService.leave(String.valueOf(1));
         assertThat(parkingService.countAvailableSlots()).isEqualTo(3);
     }
 
@@ -51,8 +51,8 @@ public class ParkingServiceImplTest {
     public void should_getSlot_when_validRegistrationNo() {
         parkingService.createParkingLot(3);
         parkingService.park(new Car("KA-01-HH-1234", "White"));
-        int slotNo = parkingService.getSlotNumberByRegistrationNumber("KA-01-HH-1234");
-        assertThat(slotNo).isEqualTo(1);
+        String slotNo = parkingService.getSlotNumberByRegistrationNumber("KA-01-HH-1234");
+        assertThat(slotNo).isEqualTo(String.valueOf(1));
     }
 
     @Test

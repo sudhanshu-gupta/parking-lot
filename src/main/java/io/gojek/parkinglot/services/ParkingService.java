@@ -9,9 +9,9 @@ public interface ParkingService {
 
     void createParkingLot(int capacity);
 
-    int park(Vehicle vehicle);
+    String park(Vehicle vehicle);
 
-    boolean leave(int slotNo);
+    boolean leave(String slotId);
 
     Map<Integer, Vehicle> getAllOccupiedSlots();
 
@@ -21,7 +21,7 @@ public interface ParkingService {
 
     List<Integer> getSlotsByColor(String color);
 
-    int getSlotNumberByRegistrationNumber(String registrationNumber);
+    String getSlotNumberByRegistrationNumber(String registrationNumber);
 
     void clearParkingLot();
 }

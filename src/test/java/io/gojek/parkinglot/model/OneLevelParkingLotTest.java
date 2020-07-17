@@ -33,8 +33,8 @@ public class OneLevelParkingLotTest {
     @Test
     public void should_parkVehicle_when_slotsAvailable() {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(3, ParkingSlotStrategy.NEAREST_SLOT);
-        int slotNo = parkingLot.park(new Car("KA-01-HH-1234", "White"));
-        assertThat(slotNo).isEqualTo(1);
+        String slotNo = parkingLot.park(new Car("KA-01-HH-1234", "White"));
+        assertThat(slotNo).isEqualTo(String.valueOf(1));
         assertThat(parkingLot.getAvailableSlot()).isEqualTo(2);
         parkingLot.clear();
     }
@@ -43,8 +43,8 @@ public class OneLevelParkingLotTest {
     public void should_returnNoSpaceAvailable_when_noSlotsAreAvailable() {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(1, ParkingSlotStrategy.NEAREST_SLOT);
         parkingLot.park(new Car("KA-01-HH-1234", "White"));
-        int slotNo = parkingLot.park(new Car("KA-01-HH-1239", "White"));
-        assertThat(slotNo).isEqualTo(Constants.NOT_AVAILABLE);
+        String slotNo = parkingLot.park(new Car("KA-01-HH-1239", "White"));
+        assertThat(slotNo).isEqualTo(String.valueOf(Constants.NOT_AVAILABLE));
         assertThat(parkingLot.getAvailableSlot()).isEqualTo(0);
         parkingLot.clear();
     }
@@ -53,8 +53,8 @@ public class OneLevelParkingLotTest {
     public void should_doNothing_when_vehicleAlreadyParked() {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(1, ParkingSlotStrategy.NEAREST_SLOT);
         parkingLot.park(new Car("KA-01-HH-1234", "White"));
-        int slotNo = parkingLot.park(new Car("KA-01-HH-1234", "White"));
-        assertThat(slotNo).isEqualTo(Constants.ALREADY_EXIST);
+        String slotNo = parkingLot.park(new Car("KA-01-HH-1234", "White"));
+        assertThat(slotNo).isEqualTo(String.valueOf(Constants.ALREADY_EXIST));
         assertThat(parkingLot.getAvailableSlot()).isEqualTo(0);
         parkingLot.clear();
     }
@@ -62,7 +62,7 @@ public class OneLevelParkingLotTest {
     @Test
     public void should_leaveVehicle_when_slotOccupied() {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(1, ParkingSlotStrategy.NEAREST_SLOT);
-        int slotNo = parkingLot.park(new Car("KA-01-HH-1234", "White"));
+        String slotNo = parkingLot.park(new Car("KA-01-HH-1234", "White"));
         assertThat(parkingLot.leave(slotNo)).isTrue();
         parkingLot.clear();
     }
@@ -70,7 +70,7 @@ public class OneLevelParkingLotTest {
     @Test
     public void should_doNothing_when_slotIsEmpty() {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(1, ParkingSlotStrategy.NEAREST_SLOT);
-        assertThat(parkingLot.leave(1)).isFalse();
+        assertThat(parkingLot.leave(String.valueOf(1))).isFalse();
         parkingLot.clear();
     }
 
@@ -137,8 +137,8 @@ public class OneLevelParkingLotTest {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(3, ParkingSlotStrategy.NEAREST_SLOT);
         parkingLot.park(new Car("KA-01-HH-1234", "White"));
         parkingLot.park(new Car("KA-01-HH-1239", "White"));
-        int slot = parkingLot.getSlotNumberByRegistrationNumber("KA-01-HH-1234");
-        assertThat(slot).isEqualTo(1);
+        String slot = parkingLot.getSlotNumberByRegistrationNumber("KA-01-HH-1234");
+        assertThat(slot).isEqualTo(String.valueOf(1));
         parkingLot.clear();
     }
 
@@ -147,8 +147,8 @@ public class OneLevelParkingLotTest {
         ParkingLot<Car> parkingLot = OneLevelParkingLot.getInstance(3, ParkingSlotStrategy.NEAREST_SLOT);
         parkingLot.park(new Car("KA-01-HH-1234", "White"));
         parkingLot.park(new Car("KA-01-HH-1239", "White"));
-        int slot = parkingLot.getSlotNumberByRegistrationNumber("KA-01-HH-1235");
-        assertThat(slot).isEqualTo(Constants.NOT_FOUND);
+        String slot = parkingLot.getSlotNumberByRegistrationNumber("KA-01-HH-1235");
+        assertThat(slot).isEqualTo(String.valueOf(Constants.NOT_FOUND));
         parkingLot.clear();
     }
 }

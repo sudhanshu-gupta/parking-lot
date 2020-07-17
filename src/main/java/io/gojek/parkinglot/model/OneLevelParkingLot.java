@@ -59,27 +59,28 @@ public class OneLevelParkingLot<T extends Vehicle> implements ParkingLot<T> {
      * @return assigned slot number if slot is available else return -1
      */
     @Override
-    public int park(T vehicle) {
+    public String park(T vehicle) {
         if (registrationNumbers.get().contains(vehicle.getRegistrationNo())) {
-            return Constants.ALREADY_EXIST;
+            return String.valueOf(Constants.ALREADY_EXIST);
         } else if (available.get() == 0) {
-            return Constants.NOT_AVAILABLE;
+            return String.valueOf(Constants.NOT_AVAILABLE);
         }
         int availableSlot = parkingSlotStrategy.get().getSlot();
         slots.put(availableSlot, Optional.of(vehicle));
         available.decrementAndGet();
         registrationNumbers.get().add(vehicle.getRegistrationNo());
         parkingSlotStrategy.get().removeSlot(availableSlot);
-        return availableSlot;
+        return String.valueOf(availableSlot);
     }
 
     /**
      * unpark a vehicle from the desired slot, if slot number is valid and vehicle is present
-     * @param slotNo slot number where the vehicle is parked
+     * @param slotId slot number where the vehicle is parked
      * @return true, if vehicle is removed from the slot, else false
      */
     @Override
-    public boolean leave(int slotNo) {
+    public boolean leave(String slotId) {
+        int slotNo = Integer.parseInt(slotId);
         if (slotNo < 0 || slotNo > capacity.get() || !slots.get(slotNo).isPresent()) {
             return false;
         }
@@ -144,11 +145,11 @@ public class OneLevelParkingLot<T extends Vehicle> implements ParkingLot<T> {
      * @return valid slot number if vehicle with given registration number is present, else -1 (Not Found)
      */
     @Override
-    public int getSlotNumberByRegistrationNumber(String registrationNumber) {
-        return slots.entrySet().stream()
+    public String getSlotNumberByRegistrationNumber(String registrationNumber) {
+        return String.valueOf(slots.entrySet().stream()
                 .filter(entry -> entry.getValue().isPresent() && entry.getValue().get().getRegistrationNo().equalsIgnoreCase(registrationNumber))
                 .mapToInt(Map.Entry::getKey)
-                .findFirst().orElse(Constants.NOT_FOUND);
+                .findFirst().orElse(Constants.NOT_FOUND));
     }
 
     /**

@@ -88,13 +88,13 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
 
     private void park(String[] args) {
         Assert.equals(args.length, 3, "Invalid input to park car");
-        int slot = parkingService.park(new Car(args[1].trim().toUpperCase(), args[2].trim()));
-        if (slot == Constants.NOT_AVAILABLE) {
+        String slotId = parkingService.park(new Car(args[1].trim().toUpperCase(), args[2].trim()));
+        if (String.valueOf(Constants.NOT_AVAILABLE).equals(slotId)) {
             printWriter.print("Sorry, parking lot is full");
-        } else if (slot == Constants.ALREADY_EXIST) {
+        } else if (String.valueOf(Constants.ALREADY_EXIST).equals(slotId)) {
             printWriter.print("Sorry, vehicle is already parked.");
         } else {
-            printWriter.print("Allocated slot number: {}", slot);
+            printWriter.print("Allocated slot number: {}", slotId);
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
         Assert.equals(args.length, 2, "Invalid input to unpark car");
         int slot = Integer.parseInt(args[1].trim());
         Assert.greaterThanOrEqualTo(slot, 1, "Invalid slot number");
-        if (parkingService.leave(slot)) {
+        if (parkingService.leave(String.valueOf(slot))) {
             printWriter.print("Slot number {} is free", slot);
         } else {
             printWriter.print("Slot number {} is empty", slot);
@@ -144,11 +144,11 @@ public abstract class AbstractCommandProcessor implements CommandProcessor {
 
     private void getSlotByRegistrationNumber(String[] args) {
         Assert.equals(args.length, 2, "Invalid registration number");
-        int slotNo = parkingService.getSlotNumberByRegistrationNumber(args[1].trim());
-        if (slotNo == Constants.NOT_FOUND) {
+        String slotId = parkingService.getSlotNumberByRegistrationNumber(args[1].trim());
+        if (String.valueOf(Constants.NOT_FOUND).equals(slotId)) {
             printWriter.print("Not found");
         } else {
-            printWriter.print("{}", slotNo);
+            printWriter.print("{}", slotId);
         }
     }
 }

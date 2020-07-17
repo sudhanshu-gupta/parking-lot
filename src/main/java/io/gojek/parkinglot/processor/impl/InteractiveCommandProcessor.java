@@ -18,7 +18,7 @@ public class InteractiveCommandProcessor extends AbstractCommandProcessor {
      */
     @Override
     public void process() {
-        printWriter.print("Welcome to Parking Lot System. Please enter commands to continue... or exit to terminate...");
+        printWriter.print("Welcome to Parking Lot System. Please enter any command to continue... or type 'exit' to terminate...");
         process(new InputStreamReader(System.in));
     }
 }

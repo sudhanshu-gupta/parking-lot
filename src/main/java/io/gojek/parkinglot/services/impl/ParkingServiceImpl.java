@@ -40,7 +40,7 @@ public class ParkingServiceImpl implements ParkingService {
      * @return assigned slot number if slot is available else return -1
      */
     @Override
-    public int park(Vehicle vehicle) {
+    public String park(Vehicle vehicle) {
         validateParkingLot();
         lock.writeLock().lock();
         try {
@@ -52,15 +52,15 @@ public class ParkingServiceImpl implements ParkingService {
 
     /**
      * unpark a vehicle from the desired slot, if slot number is valid and vehicle is present
-     * @param slotNo slot number where the vehicle is parked
+     * @param slotId slot number where the vehicle is parked
      * @return true, if vehicle is removed from the slot, else false
      */
     @Override
-    public boolean leave(int slotNo) {
+    public boolean leave(String slotId) {
         validateParkingLot();
         lock.writeLock().lock();
         try {
-            return parkingLot.leave(slotNo);
+            return parkingLot.leave(slotId);
         } finally {
             lock.writeLock().unlock();
         }
@@ -136,7 +136,7 @@ public class ParkingServiceImpl implements ParkingService {
      * @return valid slot number if vehicle with given registration number is present, else -1 (Not Found)
      */
     @Override
-    public int getSlotNumberByRegistrationNumber(String registrationNumber) {
+    public String getSlotNumberByRegistrationNumber(String registrationNumber) {
         validateParkingLot();
         lock.readLock().lock();
         try {
