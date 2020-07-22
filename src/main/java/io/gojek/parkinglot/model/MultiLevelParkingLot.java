@@ -27,7 +27,7 @@ public class MultiLevelParkingLot implements ParkingLot<Vehicle> {
 
     @Override
     public List<String> getSlotNumbersByVehicleColor(String color) {
-        return null;
+         return null;
     }
 
     @Override
